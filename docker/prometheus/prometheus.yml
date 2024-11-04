@@ -2,13 +2,11 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
-#scrape_configs:
-#  - job_name: 'otel-collector'
-#    static_configs:
-#      - targets: ['otel-collector:8889']  # Collect metrics from the OTel Collector's Prometheus endpoint
-
 scrape_configs:
-  - job_name: 'test-app'
-    metrics_path: /actuator/prometheus
+  - job_name: 'otel-collector'
     static_configs:
-      - targets: ["host.docker.internal:8080"] # this app address
+      # Collect metrics from the OTel Collector's Prometheus endpoint.
+      # hostname matches line 2 of compose file
+      # Port matches line 12 of compose file
+      - targets: ['otel-collector:8889']
+
