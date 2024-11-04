@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: demo-monitoring
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
