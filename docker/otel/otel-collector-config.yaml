@@ -14,6 +14,18 @@ exporters:
     endpoint: "0.0.0.0:8889"
     const_labels:
       label1: value1
+
+  zipkin:
+    endpoint: "http://zipkin:9411/api/v2/spans"
+    format: proto
+
+  # Fix error decoding 'exporters': unknown type: "jaeger"
+  # To fix, Change to otlp and replace port 14250 with 4317
+  otlp:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+
 #  otlp:
 #    endpoint: otelcol:4317
 
@@ -37,6 +49,10 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [prometheus] # this has to match line 13
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [zipkin, otlp]
 #    logs:
 #      receivers: [otlp]
 #      processors: [batch]
