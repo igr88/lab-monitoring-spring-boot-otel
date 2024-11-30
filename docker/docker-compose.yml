@@ -14,6 +14,9 @@ services:
       - "4317:4317" # OTLP gRPC receiver
       - "4318:4318" # OTLP http receiver
       - "55679:55679" # zpages extension
+    depends_on:
+      - jaeger
+      - zipkin
 
   prometheus:
     container_name: prometheus
@@ -24,8 +27,23 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+
   grafana:
     container_name: grafana
     image: grafana/grafana:11.3.0
     ports:
       - "3000:3000"
+
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one
+    ports:
+      - "16686:16686"
+      - "14268"
+      - "14250"
+
+  zipkin:
+    container_name: zipkin
+    image: openzipkin/zipkin:latest
+    ports:
+      - "9411:9411"
